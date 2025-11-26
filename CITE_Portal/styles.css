@@ -1,0 +1,1205 @@
+/* Global reset */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(160deg, #f4f7fb 0%, #eef1f7 100%);
+    color: #111827;
+}
+
+
+/* Top bar */
+
+.topbar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 40px;   /* increased */
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.topbar-subtitle {
+    font-size: 0.78rem;
+    color: #6b7280;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar-user {
+    font-size: 0.85rem;
+    color: #4b5563;
+}
+
+.btn-login {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: none;
+    background: #111827;
+    color: #ffffff;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Page layout */
+
+.page-shell {
+    max-width: 1200px;
+    margin-top: 10px;
+    margin: 24px auto;
+    padding: 0 24px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(260px, 1.1fr);
+    gap: 24px;
+}
+
+@media (max-width: 960px) {
+    .page-shell {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cards */
+
+.card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px 24px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);  /* stronger */
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+/* subtle lift on hover */
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+
+/* Announcements */
+
+.announcements-card {
+    min-height: 400px;
+}
+
+.ann-header-row {
+    margin-bottom: 16px;
+}
+
+.ann-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.ann-search-row {
+    margin-bottom: 16px;
+}
+
+.search-input-wrapper {
+    max-width: 95%;
+    position: relative;
+    background: #f3f4f6;
+    border-radius: 999px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.search-input-wrapper input {
+    border: none;
+    background: transparent;
+    flex: 1;
+    outline: none;
+    font-size: 1rem;
+}
+
+
+.search-icon {
+    margin-right: 8px;
+    font-size: 0.9rem;
+    opacity: 0.6;
+}
+
+.search-hidden-submit {
+    display: none;
+}
+
+/* Tabs */
+
+.ann-tabs {
+    display: inline-flex;
+    background: #f3f4f6;
+    padding: 4px;
+    border-radius: 999px;
+    gap: 4px;
+}
+
+.ann-tab {
+    padding: 6px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: #6b7280;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.ann-tab:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.ann-tab-active {
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+
+/* Announcements content */
+
+.ann-content {
+    margin-top: 12px;
+}
+
+.ann-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: #6b7280;
+}
+
+.ann-empty-title {
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.ann-empty-subtitle {
+    font-size: 0.88rem;
+}
+
+.ann-item {
+        padding: 16px;
+    border-radius: 14px;
+    transition: 0.2s;
+}
+
+.ann-item:last-child {
+    border-bottom: none;
+}
+
+.ann-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.ann-item-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.ann-chip {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+.ann-chip-events {
+    background: #ecfeff;
+    color: #155e75;
+}
+
+.ann-chip-sports {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+.ann-chip-urgent {
+    background: #fee2e2;
+    color: #be123c;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.ann-item-meta {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.ann-item-body {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+/* Sidebar cards */
+
+.calendar-card {
+    margin-bottom: 16px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.calendar-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendar-icon {
+    font-size: 1.1rem;
+}
+
+.calendar-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.calendar-month-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+}
+
+.calendar-month-nav button {
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    font-size: 0.75rem;
+    cursor: default; /* static for now */
+}
+
+.calendar-month-label {
+    color: #4b5563;
+}
+
+/* Calendar grid */
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: 0.75rem;
+}
+
+.calendar-day-head {
+    text-align: center;
+    color: #9ca3af;
+    margin-bottom: 2px;
+}
+
+.calendar-day {
+    text-align: center;
+    padding: 4px 0;
+    border-radius: 999px;
+    color: #4b5563;
+}
+
+.calendar-day.empty {
+    background: transparent;
+}
+
+.calendar-day.today {
+    background: #111827;
+    color: #ffffff;
+}
+
+/* Upcoming events */
+
+.upcoming-card {
+    margin-top: 8px;
+}
+
+.upcoming-title {
+    margin: 0 0 8px 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.upcoming-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.upcoming-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.upcoming-item:last-child {
+    border-bottom: none;
+}
+
+.upcoming-dot {
+    width: 6px;
+    height: 24px;
+    border-radius: 999px;
+    background: #2563eb;
+    margin-top: 2px;
+}
+
+.upcoming-content {
+    font-size: 0.85rem;
+}
+
+.upcoming-event-title {
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.upcoming-event-meta {
+    font-size: 0.78rem;
+    color: #6b7280;
+}
+
+/* Misc */
+
+.muted {
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
+
+/* Auth page kept from previous */
+
+.auth-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.auth-container {
+    background: white;
+    padding: 24px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.15);
+    width: 320px;
+}
+
+.auth-container h1 {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.auth-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 1px solid #cbd5f5;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 6px;
+    background: #111827;
+    color: white;
+    cursor: pointer;
+}
+
+.error {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+}
+
+.hint {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+/* Teacher Panel */
+
+.teacher-title {
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.teacher-form {
+    margin-top: 12px;
+}
+
+.teacher-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.teacher-input-block label {
+    font-size: 0.9rem;
+    color: #4b5563;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 14px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.btn-submit {
+    padding: 10px 20px;
+    background: #111827;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.teacher-list-card {
+    margin-top: 24px;
+}
+
+.teacher-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.teacher-ann-item {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 0;
+}
+
+.teacher-ann-item:last-child {
+    border-bottom: none;
+}
+
+.teacher-ann-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.teacher-ann-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.teacher-ann-meta {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 4px;
+}
+
+.teacher-ann-body {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+.btn-edit {
+    font-size: 0.8rem;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.btn-delete {
+    font-size: 0.8rem;
+    color: #b91c1c;
+    text-decoration: none;
+    margin-left: 12px;
+}
+
+.btn-cancel {
+    margin-left: 10px;
+    font-size: 0.85rem;
+    color: #6b7280;
+    text-decoration: none;
+}
+
+.teacher-ann-actions {
+    margin-top: 10px;
+}
+.site-logo-img {
+    margin-top: 2px;
+    width: 70px;
+    height: 70px;
+}
+header {
+    padding: 22px 40px; /* was probably around 10–15px */
+}
+.page-main {
+    grid-template-columns: 1.6fr 1fr; /* more balance */
+}
+.site-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;            /* spacing between logo + text */
+}
+.ann-item h2 {
+    padding-left: 4px;
+    margin: 0 0 4px 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ann-item .ann-item-meta {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    margin-bottom: 6px;
+}
+
+.ann-item p {
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+.calendar-day {
+    text-align: center;
+    padding: 6px 0;
+    border-radius: 999px;
+    font-size: 0.95rem;  /* a bit bigger */
+    color: #4b5563;
+}
+
+.calendar-day.today,
+.calendar-day.selected {
+    background: #111827;
+    color: #ffffff;
+}
+.topbar-title {
+    text-shadow: 0px 1px 3px rgba(0,0,0,0.07);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 2.2rem;     /* Bigger */
+    font-weight: 800;      /* Boldest */
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+.topbar-subtitle {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #4b5563; /* was too pale */
+    margin-top: 2px;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;   /* increase spacing so text doesn’t stick to logo */
+}
+.right-column {
+    margin-top: 5px;
+}
+.upcoming-item:hover {
+    background: #f3f4f6;
+    border-radius: 10px;
+    padding-left: 6px;
+    transition: 0.2s;
+}
+.ann-item:hover {
+    background: #fafafa;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+}
+.site-logo-img:hover {
+    transform: scale(1.03);
+    transition: 0.2s;
+}
+.ann-title-line {
+    height: 1px;
+    width: 100%;
+    margin-top: 8px;
+    background: #e5e7eb;
+}
+/* ===========================
+   DASHBOARD LAYOUT (Admin + Teacher)
+   =========================== */
+
+.dashboard-shell {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    min-height: calc(100vh - 80px); /* adjust if header height diff */
+}
+
+/* Sidebar */
+.dashboard-sidebar {
+    background: #0f172a;
+    color: #e5e7eb;
+    padding: 20px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.dashboard-sidebar-header {
+    margin-bottom: 10px;
+}
+
+.dashboard-sidebar-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.dashboard-sidebar-subtitle {
+    font-size: 0.85rem;
+    color: #9ca3af;
+}
+
+.dashboard-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.dashboard-side-link {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    color: #e5e7eb;
+    text-decoration: none;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.dashboard-side-link:hover {
+    background: #111827;
+    transform: translateX(2px);
+}
+
+.dashboard-side-link.active {
+    background: #1d4ed8;
+}
+
+.dashboard-side-link.logout-link {
+    margin-top: 10px;
+    color: #fecaca;
+}
+
+/* Main area */
+.dashboard-main {
+    padding: 22px 28px 32px;
+}
+
+.dashboard-main-header {
+    margin-bottom: 18px;
+}
+
+.dashboard-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.dashboard-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+/* Sections */
+.dashboard-section {
+    margin-bottom: 18px;
+}
+
+.dashboard-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.dashboard-section-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.dashboard-section-tag {
+    font-size: 0.8rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+/* Tables */
+.dashboard-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.dashboard-table thead {
+    background: #f3f4f6;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.dashboard-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.dashboard-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+}
+
+.badge-category-academic {
+    background: #eef2ff;
+    color: #3730a3;
+}
+
+.badge-category-events {
+    background: #ecfeff;
+    color: #155e75;
+}
+
+.badge-category-urgent {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-role-admin {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-role-teacher {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* Teacher panel specific tweaks */
+
+.teacher-form {
+    margin-top: 6px;
+}
+
+.teacher-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.teacher-input-block label {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.teacher-form-actions {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.teacher-ann-item {
+    padding: 14px 14px 12px;
+    border-radius: 14px;
+    background: #f9fafb;
+    margin-bottom: 10px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.teacher-ann-item:hover {
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.teacher-ann-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.teacher-ann-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.teacher-ann-meta {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.teacher-ann-body {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.teacher-ann-actions {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-cancel {
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.btn-edit {
+    color: #2563eb;
+}
+
+.btn-delete {
+    color: #b91c1c;
+}
+
+.btn-cancel {
+    color: #6b7280;
+}
+
+@media (max-width: 900px) {
+    .dashboard-shell {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .dashboard-sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+/* ===========================
+   PANEL LAYOUT (Admin + Teacher)
+   =========================== */
+
+.panel-shell {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 24px 40px 40px;
+}
+
+.panel-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.panel-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.panel-page-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.panel-page-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.panel-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.panel-user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.panel-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #111827;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.panel-logout-btn:hover {
+    background: #1f2937;
+    transform: translateY(-1px);
+}
+
+.panel-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Reuse existing card style – just ensure spacing */
+.dashboard-section {
+    margin-bottom: 8px;
+}
+
+/* Panel section headers (for lists and tables) */
+.panel-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.panel-section-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.panel-section-tag {
+    font-size: 0.8rem;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+/* Tables reused from earlier suggestion */
+.dashboard-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.dashboard-table thead {
+    background: #f3f4f6;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+    padding: 8px 10px;
+    text-align: left;
+}
+
+.dashboard-table tbody tr:nth-child(even) {
+    background: #f9fafb;
+}
+
+.dashboard-table tbody tr:hover {
+    background: #eff6ff;
+}
+
+/* Badges */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+}
+
+.badge-category-academic {
+    background: #eef2ff;
+    color: #3730a3;
+}
+
+.badge-category-events {
+    background: #ecfeff;
+    color: #155e75;
+}
+
+.badge-category-urgent {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.badge-role-admin {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.badge-role-teacher {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* Teacher announcement list */
+.teacher-ann-item {
+    padding: 14px 14px 12px;
+    border-radius: 14px;
+    background: #f9fafb;
+    margin-bottom: 10px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.teacher-ann-item:hover {
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    transform: translateY(-1px);
+}
+
+.teacher-ann-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.teacher-ann-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.teacher-ann-meta {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.teacher-ann-body {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.teacher-ann-actions {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+}
+
+.btn-edit,
+.btn-delete,
+.btn-cancel {
+    text-decoration: none;
+    font-size: 0.8rem;
+}
+
+.btn-edit {
+    color: #2563eb;
+}
+
+.btn-delete {
+    color: #b91c1c;
+}
+
+.btn-cancel {
+    color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .panel-shell {
+        padding: 18px 16px 28px;
+    }
+
+    .panel-topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .panel-user-actions {
+        align-self: flex-end;
+    }
+
+    .teacher-form-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

@@ -1,0 +1,53 @@
+/* ===============================
+   TABLE: users
+================================ */
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'teacher') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (id, username, password, name, role, created_at) VALUES
+(1, 'admin', '$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 'Administrator Admin', 'admin', '2025-11-25 00:00:00'),
+(2, 'teacher1', '$2y$10$xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 'Ms. Anderson', 'teacher', '2025-11-25 00:00:00');
+
+
+
+/* ===============================
+   TABLE: announcements
+================================ */
+CREATE TABLE IF NOT EXISTS announcements (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    body TEXT NOT NULL,
+    category ENUM('academic', 'events', 'urgent') NOT NULL,
+    created_by INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+INSERT INTO announcements (id, title, body, category, created_by, created_at, updated_at) VALUES
+(1, 'SOA RELEASED!', 'Get your SOA on the CITE office!', 'urgent', 2, '2025-11-25 03:43:00', NULL);
+
+
+
+/* ===============================
+   TABLE: events
+================================ */
+CREATE TABLE IF NOT EXISTS events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    event_date DATE NOT NULL,
+    location VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO events (id, title, description, event_date, location, created_at) VALUES
+(1, 'General Assembly', 'School-wide general assembly', '2025-01-15', 'Main Hall', '2025-11-25 09:17:33'),
+(2, 'Intramurals', 'Sports and games week', '2025-02-10', 'Campus Grounds', '2025-11-25 09:17:33'),
+(3, 'Research Expo', 'College research presentation event', '2025-03-20', 'Auditorium', '2025-11-25 09:17:33');
