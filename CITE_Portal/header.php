@@ -1,21 +1,20 @@
 <?php
 // header.php
-require_once 'auth.php';
-$user = current_user();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <header class="topbar">
     <div class="topbar-left">
-        <div class="logo-circle">
-          <img src="assets/campusss.png" class="site-logo-img" alt="CampusConnect Logo">
-        </div>
+        <img src="assets/campusss.png" class="site-logo-img">
+
         <div class="topbar-text">
             <div class="topbar-title">CampusConnect</div>
             <div class="topbar-subtitle">Communication Platform</div>
         </div>
     </div>
 
-    <!-- No login button shown -->
-    <div class="topbar-right">
-        <!-- Empty space -->
-    </div>
+    <!-- RIGHT SIDE COMPLETELY EMPTY -->
+    <div class="topbar-right"></div>
 </header>

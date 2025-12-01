@@ -1,33 +1,42 @@
 <?php
-// admin_panel.php
 require_once 'auth.php';
-require_role('admin');
+require_login();
+
+if ($_SESSION['role'] !== 'admin') {
+    header("Location: index.php");
+    exit();
+}
+
 global $conn;
 
-$user = current_user();
-
-// Fetch all announcements
-$ann = $conn->query("
-    SELECT a.*, u.name AS author_name 
-    FROM announcements a 
+// Fetch pending announcements
+$pending_stmt = $conn->query("
+    SELECT a.*, u.name AS teacher_name
+    FROM announcements a
     LEFT JOIN users u ON a.created_by = u.id
+    WHERE a.status = 'pending'
     ORDER BY a.created_at DESC
 ");
-$announcements = $ann ? $ann->fetch_all(MYSQLI_ASSOC) : [];
 
-// Fetch all users
-$users_result = $conn->query("
-    SELECT id, username, name, role, created_at 
-    FROM users 
-    ORDER BY created_at DESC
+// Fetch approved announcements
+$approved_stmt = $conn->query("
+    SELECT a.*, u.name AS teacher_name
+    FROM announcements a
+    LEFT JOIN users u ON a.created_by = u.id
+    WHERE a.status = 'approved'
+    ORDER BY a.created_at DESC
 ");
-$users = $users_result ? $users_result->fetch_all(MYSQLI_ASSOC) : [];
+
+// Fetch feedback
+$feedback_stmt = $conn->query("
+    SELECT * FROM feedback ORDER BY created_at DESC
+");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Panel | CampusConnect</title>
+    <title>Admin Panel</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -35,104 +44,139 @@ $users = $users_result ? $users_result->fetch_all(MYSQLI_ASSOC) : [];
 <?php include 'header.php'; ?>
 
 <div class="panel-shell">
-    <!-- Top bar just for admin (name + logout) -->
-    <div class="panel-topbar">
-        <div class="panel-title-group">
-            <h1 class="panel-page-title">Admin Dashboard</h1>
-            <p class="panel-page-subtitle">
-                Overview of announcements and registered users.
-            </p>
-        </div>
 
-        <div class="panel-user-actions">
-            <span class="panel-user-name">
-                <?= htmlspecialchars($user['name']) ?>
-            </span>
-            <a href="admin_login.php" class="panel-logout-btn">Logout</a>
-        </div>
+    <!-- TOP RIGHT BUTTONS -->
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-bottom:20px;">
+        <a href="index.php" class="btn-login">Home</a>
+        <a href="admin_login.php" class="btn-login" style="background:#b91c1c;">Logout</a>
     </div>
 
-    <main class="panel-main">
-        <!-- ANNOUNCEMENTS SECTION -->
-        <section class="card dashboard-section">
-            <div class="panel-section-header">
-                <h2>All Announcements</h2>
-                <span class="panel-section-tag"><?= count($announcements) ?> total</span>
-            </div>
+    <div class="dashboard-main-header">
+        <h1 class="dashboard-title">Admin Panel</h1>
+        <p class="dashboard-subtitle">Manage announcements & monitor teacher activity</p>
+    </div>
 
-            <?php if (empty($announcements)): ?>
-                <p class="muted">No announcements posted yet.</p>
-            <?php else: ?>
-                <div class="dashboard-table-wrapper">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Category</th>
-                                <th>Author</th>
-                                <th>Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($announcements as $a): ?>
-                                <tr>
-                                    <td class="dashboard-cell-title">
-                                        <?= htmlspecialchars($a['title']) ?>
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-category-<?= htmlspecialchars($a['category']) ?>">
-                                            <?= htmlspecialchars(ucfirst($a['category'])) ?>
-                                        </span>
-                                    </td>
-                                    <td><?= htmlspecialchars($a['author_name'] ?? 'Unknown') ?></td>
-                                    <td><?= date('M d, Y h:i A', strtotime($a['created_at'])) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
-        </section>
+    <!-- PENDING ANNOUNCEMENTS -->
+    <section class="dashboard-section card">
+        <div class="dashboard-section-header">
+            <h2>Pending Announcements</h2>
+            <span class="dashboard-section-tag">Awaiting Review</span>
+        </div>
 
-        <!-- USERS SECTION -->
-        <section class="card dashboard-section">
-            <div class="panel-section-header">
-                <h2>Registered Users</h2>
-                <span class="panel-section-tag"><?= count($users) ?> users</span>
-            </div>
+        <div class="dashboard-table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Teacher</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-            <?php if (empty($users)): ?>
-                <p class="muted">No users found.</p>
-            <?php else: ?>
-                <div class="dashboard-table-wrapper">
-                    <table class="dashboard-table">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Joined</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($users as $u): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($u['username']) ?></td>
-                                    <td><?= htmlspecialchars($u['name']) ?></td>
-                                    <td>
-                                        <span class="badge badge-role-<?= htmlspecialchars($u['role']) ?>">
-                                            <?= htmlspecialchars(ucfirst($u['role'])) ?>
-                                        </span>
-                                    </td>
-                                    <td><?= date('M d, Y', strtotime($u['created_at'])) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php endif; ?>
-        </section>
-    </main>
+                <tbody>
+                <?php if ($pending_stmt->num_rows === 0): ?>
+                    <tr><td colspan="5" class="muted">No pending announcements.</td></tr>
+                <?php else: ?>
+                    <?php while ($p = $pending_stmt->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($p['title']) ?></td>
+                            <td><?= htmlspecialchars($p['teacher_name']) ?></td>
+                            <td>
+                                <span class="badge badge-category-<?= $p['category'] ?>">
+                                    <?= ucfirst($p['category']) ?>
+                                </span>
+                            </td>
+                            <td><?= date('M d, Y h:i A', strtotime($p['created_at'])) ?></td>
+                            <td>
+                                <a href="process_announcement.php?id=<?= $p['id'] ?>&action=approve"
+                                   class="btn-edit">Approve</a> &nbsp;
+                                <a href="process_announcement.php?id=<?= $p['id'] ?>&action=reject"
+                                   class="btn-delete">Reject</a>
+                            </td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- APPROVED ANNOUNCEMENTS -->
+    <section class="dashboard-section card">
+        <div class="dashboard-section-header">
+            <h2>Approved Announcements</h2>
+            <span class="dashboard-section-tag">Published</span>
+        </div>
+
+        <div class="dashboard-table-wrapper">
+            <table class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Teacher</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <?php if ($approved_stmt->num_rows === 0): ?>
+                    <tr><td colspan="4" class="muted">No approved announcements yet.</td></tr>
+                <?php else: ?>
+                    <?php while ($a = $approved_stmt->fetch_assoc()): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($a['title']) ?></td>
+                            <td><?= htmlspecialchars($a['teacher_name']) ?></td>
+                            <td>
+                                <span class="badge badge-category-<?= $a['category'] ?>">
+                                    <?= ucfirst($a['category']) ?>
+                                </span>
+                            </td>
+                            <td><?= date('M d, Y h:i A', strtotime($a['created_at'])) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section class="dashboard-section card">
+        <div class="dashboard-section-header">
+            <h2>Student Feedback</h2>
+            <span class="dashboard-section-tag">Viewer Messages</span>
+        </div>
+
+ <table class="dashboard-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Message</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    <?php if ($feedback_stmt->num_rows === 0): ?>
+        <tr><td colspan="3" class="muted">No feedback yet.</td></tr>
+    <?php else: ?>
+        <?php while ($f = $feedback_stmt->fetch_assoc()): ?>
+            <tr>
+                <td><?= htmlspecialchars($f['name'] ?: 'Anonymous') ?></td>
+                <td><?= nl2br(htmlspecialchars($f['message'])) ?></td>
+                <td><?= date('M d, Y h:i A', strtotime($f['created_at'])) ?></td>
+            </tr>
+        <?php endwhile; ?>
+    <?php endif; ?>
+    </tbody>
+</table>
+
+        </div>
+    </section>
+
 </div>
 
 </body>

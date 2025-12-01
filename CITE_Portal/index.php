@@ -7,14 +7,16 @@ global $conn;
 $search   = trim($_GET['q'] ?? '');
 $category = $_GET['category'] ?? 'all';
 
+// Only show APPROVED announcements
 $sql = "SELECT a.*, u.name AS author_name
         FROM announcements a
         LEFT JOIN users u ON a.created_by = u.id
-        WHERE 1";
+        WHERE a.status = 'approved'";
 
 $params = [];
 $types  = "";
 
+// Search handler
 if ($search !== '') {
     $sql     .= " AND (a.title LIKE ? OR a.body LIKE ?)";
     $like     = '%'.$search.'%';
@@ -23,6 +25,7 @@ if ($search !== '') {
     $types   .= "ss";
 }
 
+// Category filter
 $validCategories = ['academic', 'events', 'sports', 'urgent'];
 
 if ($category !== 'all' && in_array($category, $validCategories)) {
@@ -127,6 +130,27 @@ $events = $events_result ? $events_result->fetch_all(MYSQLI_ASSOC) : [];
                     <?php endforeach; ?>
                 <?php endif; ?>
             </div>
+
+            </section> <!-- End of announcements card -->
+
+<!-- Feedback Button BELOW announcements -->
+<div style="margin-top: 28px; text-align:center; width:100%;">
+    <a href="feedback.php"
+       style="
+           display:inline-block;
+           padding:10px 24px;
+           background:#111827;
+           color:white;
+           border-radius:12px;
+           text-decoration:none;
+           font-size:0.9rem;
+           font-weight:500;
+           box-shadow:0 2px 6px rgba(0,0,0,0.15);
+       ">
+        Send Feedback
+    </a>
+</div>
+
         </section>
     </main>
 
@@ -149,7 +173,6 @@ $events = $events_result ? $events_result->fetch_all(MYSQLI_ASSOC) : [];
 
             <div class="calendar-grid">
                 <?php
-                // simple static calendar grid (Sun-Sat)
                 $daysShort = ['Su','Mo','Tu','We','Th','Fr','Sa'];
                 foreach ($daysShort as $d): ?>
                     <div class="calendar-day-head"><?= $d ?></div>

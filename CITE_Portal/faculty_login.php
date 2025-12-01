@@ -9,8 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
 
     if ($username && $password && login($username, $password)) {
+
+        // Get logged-in user data
         $user = current_user();
 
+        // Restrict login only for faculty
         if ($user['role'] !== 'teacher') {
             $error = "This login is for faculty only.";
             logout();
@@ -18,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: teacher_panel.php");
             exit;
         }
+
     } else {
         $error = "Invalid faculty username or password.";
     }
